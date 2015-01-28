@@ -1,16 +1,16 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class ParallelMergeSort {
-	public static <T extends Comparable<T>> void parallelSort(T[] a) {
+public class ParallelMergeSorter implements ParallelSorter {
+	public <T extends Comparable<T>> void parallelSort(T[] a) {
 		parallelMergeSort(a, 2);
 	}
 
-	public static <T extends Comparable<T>> void serialSort(T[] a) {
+	public <T extends Comparable<T>> void serialSort(T[] a) {
 		mergeSort(a);
 	}
 
-	private static <T extends Comparable<T>> void parallelMergeSort(T[] a,
+	private <T extends Comparable<T>> void parallelMergeSort(T[] a,
 			int NUM_THREADS) {
 		if (NUM_THREADS <= 1) {
 			mergeSort(a);
@@ -38,7 +38,7 @@ public class ParallelMergeSort {
 		merge(left, right, a);
 	}
 
-	private static <T extends Comparable<T>> Thread mergeSortThread(T[] a,
+	private <T extends Comparable<T>> Thread mergeSortThread(T[] a,
 			int NUM_THREADS) {
 		return new Thread() {
 			@Override
@@ -48,7 +48,7 @@ public class ParallelMergeSort {
 		};
 	}
 
-	private static <T extends Comparable<T>> void mergeSort(T[] a) {
+	private <T extends Comparable<T>> void mergeSort(T[] a) {
 		if (a.length <= 1)
 			return;
 
@@ -63,7 +63,7 @@ public class ParallelMergeSort {
 		merge(left, right, a);
 	}
 
-	private static <T extends Comparable<T>> void merge(T[] a, T[] b, T[] r) {
+	private <T extends Comparable<T>> void merge(T[] a, T[] b, T[] r) {
 		int i = 0, j = 0, k = 0;
 		while (i < a.length && j < b.length) {
 			if (a[i].compareTo(b[j]) < 0)
@@ -79,14 +79,14 @@ public class ParallelMergeSort {
 			r[k++] = b[j++];
 	}
 
-	private static void printArray(Object[] a) {
+	private void printArray(Object[] a) {
 		for (int i = 0; i < a.length; i++) {
 			System.out.print(a[i] + " ");
 		}
 		System.out.println();
 	}
 
-	private static Integer[] generateArray(int length) {
+	private Integer[] generateArray(int length) {
 		int BOUND = 1024;
 		Integer[] s = new Integer[length];
 		Random r = new Random();
@@ -97,7 +97,7 @@ public class ParallelMergeSort {
 		return s;
 	}
 
-	private static void sortBenchmark() {
+	private void sortBenchmark() {
 		int LENGTH = Integer.MAX_VALUE;
 		Integer[] a = generateArray(LENGTH / 1024);
 
@@ -107,7 +107,7 @@ public class ParallelMergeSort {
 		long stop = System.currentTimeMillis();
 		System.out.println("Serial Sort Run Time: " + (stop - start) + ".");
 		
-		for (int i = 2; i <= 128; i += i) {
+		for (int i = 1; i <= 128; i += i) {
 			long totalTime = 0;
 			System.out.println("Individual Parallel Sort Run Time with " + i + " Threads: ");
 			for(int k = 0; k < 10; k++) {
@@ -124,7 +124,8 @@ public class ParallelMergeSort {
 	}
 
 	public static void main(String[] args) {
-		sortBenchmark();
+		ParallelMergeSorter p = new ParallelMergeSorter();
+		p.sortBenchmark();
 		
 //		Integer[] a = generateArray(25);
 //		printArray(a);
