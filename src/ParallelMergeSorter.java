@@ -1,11 +1,13 @@
 import java.util.Arrays;
-import java.util.Random;
 
 public class ParallelMergeSorter implements ParallelSorter {
-	public <T extends Comparable<T>> void parallelSort(T[] a) {
-		parallelMergeSort(a, 2);
+	
+	@Override
+	public <T extends Comparable<T>> void parallelSort(T[] a, int numThreads) {
+		parallelMergeSort(a, numThreads);
 	}
 
+	@Override
 	public <T extends Comparable<T>> void serialSort(T[] a) {
 		mergeSort(a);
 	}
@@ -77,59 +79,5 @@ public class ParallelMergeSorter implements ParallelSorter {
 
 		while (j < b.length)
 			r[k++] = b[j++];
-	}
-
-	private void printArray(Object[] a) {
-		for (int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + " ");
-		}
-		System.out.println();
-	}
-
-	private Integer[] generateArray(int length) {
-		int BOUND = 1024;
-		Integer[] s = new Integer[length];
-		Random r = new Random();
-		for (int i = 0; i < length; i++) {
-			s[i] = r.nextInt(BOUND);
-		}
-
-		return s;
-	}
-
-	private void sortBenchmark() {
-		int LENGTH = Integer.MAX_VALUE;
-		Integer[] a = generateArray(LENGTH / 1024);
-
-		// sequential
-		long start = System.currentTimeMillis();
-		mergeSort(a);
-		long stop = System.currentTimeMillis();
-		System.out.println("Serial Sort Run Time: " + (stop - start) + ".");
-		
-		for (int i = 1; i <= 128; i += i) {
-			long totalTime = 0;
-			System.out.println("Individual Parallel Sort Run Time with " + i + " Threads: ");
-			for(int k = 0; k < 10; k++) {
-				a = generateArray(LENGTH / 1024);
-				start = System.currentTimeMillis();
-				parallelMergeSort(a, i);
-				stop = System.currentTimeMillis();
-				totalTime += (stop - start);
-				System.out.print((stop - start) + ". " );
-			}
-			System.out.println("\nAverage Parallel Sort Run Time with " + i
-					+ " Threads: " + (totalTime / 10) + ".\n");
-		}
-	}
-
-	public static void main(String[] args) {
-		ParallelMergeSorter p = new ParallelMergeSorter();
-		p.sortBenchmark();
-		
-//		Integer[] a = generateArray(25);
-//		printArray(a);
-//		parallelSort(a);
-//		printArray(a);
 	}
 }
