@@ -1,5 +1,8 @@
 import java.util.Random;
 
+import javafx.scene.chart.Axis;
+import javafx.scene.chart.ValueAxis;
+
 
 public class SorterBenchmarker {
 	
@@ -21,7 +24,12 @@ public class SorterBenchmarker {
 		return s;
 	}
 	
-	private static void benchmark(ParallelSorter p) {
+	private static void benchmark(IParallelSorter p) {
+		Axis<Integer> x = new ValueAxis<Integer>(0.0, 140.0);
+		Axis<Integer> y = new ValueAxis<Integer>(0.0, 1500.0);
+		
+		SortLineChart s = new SortLineChart(x, y);
+		
 		int LENGTH = Integer.MAX_VALUE;
 		Integer[] a = generateArray(LENGTH / 1024);
 
@@ -48,7 +56,7 @@ public class SorterBenchmarker {
 	}
 	
 	public static void main(String[] args) {
-		ParallelSorter p = new ParallelMergeSorter();
+		IParallelSorter p = new ParallelMergeSorter();
 		benchmark(p);
 	}
 }

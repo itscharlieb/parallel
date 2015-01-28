@@ -1,5 +1,5 @@
 
-public class ParallelQuickSort implements ParallelSorter {
+public class ParallelQuickSort implements IParallelSorter {
 
 	@Override
 	public <T extends Comparable<T>> void parallelSort(T[] a, int numThreads) {
