@@ -99,26 +99,36 @@ public class ParallelMergeSort {
 
 	private static void sortBenchmark() {
 		int LENGTH = Integer.MAX_VALUE;
-		Integer[] a = generateArray(LENGTH / 64);
+		Integer[] a = generateArray(LENGTH / 1024);
 
 		// sequential
 		long start = System.currentTimeMillis();
 		mergeSort(a);
 		long stop = System.currentTimeMillis();
 		System.out.println("Serial Sort Run Time: " + (stop - start) + ".");
-
+		
 		for (int i = 2; i <= 128; i += i) {
-			a = generateArray(LENGTH / 64);
-			start = System.currentTimeMillis();
-			parallelMergeSort(a, i);
-			stop = System.currentTimeMillis();
-			System.out.println("Parallel Sort Run Time with " + i
-					+ " Threads: " + (stop - start) + ".");
+			long totalTime = 0;
+			System.out.println("Individual Parallel Sort Run Time with " + i + " Threads: ");
+			for(int k = 0; k < 10; k++) {
+				a = generateArray(LENGTH / 1024);
+				start = System.currentTimeMillis();
+				parallelMergeSort(a, i);
+				stop = System.currentTimeMillis();
+				totalTime += (stop - start);
+				System.out.print((stop - start) + ". " );
+			}
+			System.out.println("\nAverage Parallel Sort Run Time with " + i
+					+ " Threads: " + (totalTime / 10) + ".\n");
 		}
 	}
 
 	public static void main(String[] args) {
 		sortBenchmark();
-		System.out.println("test");
+		
+//		Integer[] a = generateArray(25);
+//		printArray(a);
+//		parallelSort(a);
+//		printArray(a);
 	}
 }
