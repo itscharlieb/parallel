@@ -12,8 +12,7 @@ public class ParallelMergeSorter implements IParallelSorter {
 		mergeSort(a);
 	}
 
-	private <T extends Comparable<T>> void parallelMergeSort(T[] a,
-			int NUM_THREADS) {
+	private <T extends Comparable<T>> void parallelMergeSort(T[] a, int NUM_THREADS) {
 		if (NUM_THREADS <= 1) {
 			mergeSort(a);
 			return;
@@ -40,8 +39,7 @@ public class ParallelMergeSorter implements IParallelSorter {
 		merge(left, right, a);
 	}
 
-	private <T extends Comparable<T>> Thread mergeSortThread(T[] a,
-			int NUM_THREADS) {
+	private <T extends Comparable<T>> Thread mergeSortThread(T[] a, int NUM_THREADS) {
 		return new Thread() {
 			@Override
 			public void run() {
