@@ -3,8 +3,8 @@ import java.util.Arrays;
 public class ParallelMergeSorter implements IParallelSorter {
 	
 	@Override
-	public <T extends Comparable<T>> void parallelSort(T[] a, int numThreads) {
-		parallelMergeSort(a, numThreads);
+	public <T extends Comparable<T>> void parallelSort(T[] a, int NUM_THREADS) {
+		parallelMergeSort(a, NUM_THREADS);
 	}
 
 	@Override

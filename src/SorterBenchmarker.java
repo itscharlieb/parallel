@@ -89,7 +89,7 @@ public class SorterBenchmarker {
 	}
 
 	public static void main(String[] args) {
-		testSorter(new ParallelQuickSorter());
+		benchmark(new ParallelQuickSorter());
 		
 	}
 }
