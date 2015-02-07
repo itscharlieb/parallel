@@ -1,3 +1,4 @@
+package sort;
 import java.util.Random;
 
 public class SorterBenchmarker {
@@ -20,39 +21,39 @@ public class SorterBenchmarker {
 		return s;
 	}
 
-//	private static void gsonBenchmark(IParallelSorter p) {
-//		Gson gson = new Gson();
-//		String filename = "data/jsonData";
-//		int LENGTH = Integer.MAX_VALUE;
-//		Integer[] a = generateArray(LENGTH / 1024);
-//		long start, stop;
-//		long[] data = new long[10];
-//
-//		for (int i = 1; i <= 128; i += i) {
-//			long totalTime = 0;
-//			for (int k = 0; k < 10; k++) {
-//				a = generateArray(LENGTH / 1024);
-//
-//				start = System.currentTimeMillis();
-//				p.parallelSort(a, i);
-//				stop = System.currentTimeMillis();
-//
-//				totalTime += (stop - start);
-//				data[k] = (stop - start);
-//			}
-//			
-//			String s = gson.toJson(data);
-//			FileOutputStream outputStream;
-//			
-//			try {
-//				outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-//				outputStream.write(s.getBytes());
-//				outputStream.close();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
+	//	private static void gsonBenchmark(IParallelSorter p) {
+	//		Gson gson = new Gson();
+	//		String filename = "data/jsonData";
+	//		int LENGTH = Integer.MAX_VALUE;
+	//		Integer[] a = generateArray(LENGTH / 1024);
+	//		long start, stop;
+	//		long[] data = new long[10];
+	//
+	//		for (int i = 1; i <= 128; i += i) {
+	//			long totalTime = 0;
+	//			for (int k = 0; k < 10; k++) {
+	//				a = generateArray(LENGTH / 1024);
+	//
+	//				start = System.currentTimeMillis();
+	//				p.parallelSort(a, i);
+	//				stop = System.currentTimeMillis();
+	//
+	//				totalTime += (stop - start);
+	//				data[k] = (stop - start);
+	//			}
+	//			
+	//			String s = gson.toJson(data);
+	//			FileOutputStream outputStream;
+	//			
+	//			try {
+	//				outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+	//				outputStream.write(s.getBytes());
+	//				outputStream.close();
+	//			} catch (Exception e) {
+	//				e.printStackTrace();
+	//			}
+	//		}
+	//	}
 
 	private static void benchmark(IParallelSorter p) {
 		int LENGTH = Integer.MAX_VALUE;
@@ -80,7 +81,7 @@ public class SorterBenchmarker {
 					+ " Threads: " + (totalTime / 10) + ".\n");
 		}
 	}
-	
+
 	private static void testSorter(IParallelSorter p){
 		Integer[] a = generateArray(10);
 		printArray(a);
@@ -90,6 +91,6 @@ public class SorterBenchmarker {
 
 	public static void main(String[] args) {
 		benchmark(new ParallelQuickSorter());
-		
+
 	}
 }

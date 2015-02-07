@@ -1,3 +1,4 @@
+package sort;
 
 
 public class ParallelQuickSorter implements IParallelSorter {
