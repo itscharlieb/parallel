@@ -1,5 +1,10 @@
 package sort;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class SorterBenchmarker {
 
@@ -21,40 +26,45 @@ public class SorterBenchmarker {
 		return s;
 	}
 
-	//	private static void gsonBenchmark(IParallelSorter p) {
-	//		Gson gson = new Gson();
-	//		String filename = "data/jsonData";
-	//		int LENGTH = Integer.MAX_VALUE;
-	//		Integer[] a = generateArray(LENGTH / 1024);
-	//		long start, stop;
-	//		long[] data = new long[10];
-	//
-	//		for (int i = 1; i <= 128; i += i) {
-	//			long totalTime = 0;
-	//			for (int k = 0; k < 10; k++) {
-	//				a = generateArray(LENGTH / 1024);
-	//
-	//				start = System.currentTimeMillis();
-	//				p.parallelSort(a, i);
-	//				stop = System.currentTimeMillis();
-	//
-	//				totalTime += (stop - start);
-	//				data[k] = (stop - start);
-	//			}
-	//			
-	//			String s = gson.toJson(data);
-	//			FileOutputStream outputStream;
-	//			
-	//			try {
-	//				outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-	//				outputStream.write(s.getBytes());
-	//				outputStream.close();
-	//			} catch (Exception e) {
-	//				e.printStackTrace();
-	//			}
-	//		}
-	//	}
+	private static void gsonBenchmark(IParallelSorter p) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		SortData sortData;
+		FileWriter fileWriter;
 
+		try {
+			fileWriter = new FileWriter("data/sortData.json");
+
+			int LENGTH = Integer.MAX_VALUE;
+			Integer[] a;
+			long start, stop;
+			long[] data = new long[10];
+
+			for (int i = 1; i <= 128; i += i) {
+				System.out.println("test");
+				
+				long totalTime = 0;
+				for (int k = 0; k < 10; k++) {
+					a = generateArray(LENGTH / 1024);
+
+					start = System.currentTimeMillis();
+					p.parallelSort(a, i);
+					stop = System.currentTimeMillis();
+
+					totalTime += (stop - start);
+					data[k] = (stop - start);
+				}
+				long avgTime = totalTime / 10;
+				sortData = new SortData(i, data, avgTime);
+				String jsonRepresentation = gson.toJson(sortData);
+				fileWriter.write(jsonRepresentation);
+			}
+			fileWriter.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 	private static void benchmark(IParallelSorter p) {
 		int LENGTH = Integer.MAX_VALUE;
 		Integer[] a = generateArray(LENGTH / 1024);
@@ -90,7 +100,7 @@ public class SorterBenchmarker {
 	}
 
 	public static void main(String[] args) {
-		benchmark(new ParallelQuickSorter());
+		gsonBenchmark(new ParallelQuickSorter());
 
 	}
 }
